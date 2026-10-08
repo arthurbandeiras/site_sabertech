@@ -1,0 +1,17 @@
+services:
+  web:
+    build: .
+    image: local-bright-path:latest
+    restart: unless-stopped
+    ports:
+      # O servidor fica atrás de um proxy (sabertech.ufes.br) e deve atender
+      # HTTPS diretamente na 443, com certificado autoassinado (gerado no build).
+      - "443:443"
+    volumes:
+      # persiste os arquivos enviados pelos usuários (multer) entre deploys/restarts
+      - uploads_data:/app/uploads
+    env_file:
+      - .env
+
+volumes:
+  uploads_data:
